@@ -2182,8 +2182,10 @@
                     data: formData,
                     success: function(response) {
                         console.log('Éxito:', response);
-                        alert("Plantilla enviada con éxito.");
-                        $('#modal_send_template').modal('hide');
+                        closeModal('modal_send_template');
+
+                        // alert("Plantilla enviada con éxito.");
+                        // $('#modal_send_template').modal('hide');
                     },
                     error: function(xhr, status, error) {
                         console.error('Error en la solicitud:', error);
