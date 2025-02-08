@@ -1509,6 +1509,8 @@
 @section('js')
     {{-- <script src="{{ asset('assets/js/whatsapp/custom.js') }}"></script> --}}
     <script src="{{ asset('assets/plugins/bundle/plugins.bundle.js') }}"></script>
+    <script src="{{ asset('assets/js/whatsapp/components/custom-modal.js') }}"></script>
+
     @verbatim
     <script>
         $(document).ready(function() {
@@ -3351,11 +3353,7 @@
             function handleApiResponse(response) {
                 if (response.success) {
                     showAlert('success', 'Plantilla creada exitosamente');
-                    // $('#modal_create_template').modal('hide');
-                    // $('.modal-backdrop').remove(); // Remove the backdrop
-                    // $('body').removeClass('modal-open'); // Remove the modal-open class from body
-
-                    $('#modal_create_template').modal('hide');
+                    closeModal('modal_create_template');
                     $('body').removeClass('modal-open').css('padding-right', '');
                 } else {
                     showAlert('error', response.error || 'Error desconocido');
