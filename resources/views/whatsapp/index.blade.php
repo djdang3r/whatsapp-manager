@@ -2102,7 +2102,7 @@
                         // Añadir campos dinámicos basados en los parámetros de la plantilla
                         data.components.forEach(component => {
                             if (component.type === 'HEADER' && component.text) {
-                                const matches = component.text.match(/@{{\d+}}/g);
+                                const matches = component.text.match(/{{\d+}}/g);
                                 if (matches) {
                                     form.innerHTML += `<h5>HEADER Parameters</h5>`;
                                     matches.forEach((match, index) => {
@@ -2183,6 +2183,9 @@
                     success: function(response) {
                         console.log('Éxito:', response);
                         closeModal('modal_send_template');
+                        $('body').removeClass('modal-open').css('padding-right', '');
+                        showAlert('success', 'Mensaje de Plantilla Enviado Satistactoriamente.');
+
 
                         // alert("Plantilla enviada con éxito.");
                         // $('#modal_send_template').modal('hide');

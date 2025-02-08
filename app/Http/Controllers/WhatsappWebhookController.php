@@ -71,7 +71,7 @@ class WhatsappWebhookController extends Controller
                 $tipoMensaje = $messages['type'];
 
                 // Procesa el contacto
-                $contact = Contact::firstOrCreate(
+                $contact = Contact::updateOrCreate(
                     ['wa_id' => $contacts['wa_id']],
                     [
                         'country_code' => substr($contacts['wa_id'], 0, 2),
