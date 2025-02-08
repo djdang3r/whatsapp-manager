@@ -2060,7 +2060,7 @@
                     },
                     success: function (response) {
                         // Manejar la respuesta
-                        console.log(response);
+                        // console.log(response);
                         $('#detail_template_body').html(response);
                     },
                     error: function (xhr, status, error) {
@@ -2078,7 +2078,7 @@
                     },
                     success: function (data) {
                         // Mapea los datos del JSON a los campos del formulario
-                        console.log(data);
+                        // console.log(data);
 
                         const form = document.getElementById('sendTemplateForm');
                         form.innerHTML = ''; // Limpiar el formulario
@@ -2098,6 +2098,7 @@
                             </div>
                         `;
 
+                        console.log(data.components);
                         // Añadir campos dinámicos basados en los parámetros de la plantilla
                         data.components.forEach(component => {
                             if (component.type === 'HEADER' && component.text) {
@@ -2115,7 +2116,9 @@
                                     });
                                 }
                             } else if (component.type === 'BODY' && component.text) {
-                                const matches = component.text.match(/@{{\d+}}/g);
+                                console.log(component);
+                                const matches = component.text.match(/{{\d+}}/g);
+                                console.log("Matches: " + matches);
                                 if (matches) {
                                     form.innerHTML += `<h5>BODY Parameters</h5>`;
                                     matches.forEach((match, index) => {
@@ -2131,7 +2134,7 @@
                             } else if (component.type === 'BUTTONS') {
                                 component.buttons.forEach((button, buttonIndex) => {
                                     if (button.url) {
-                                        const matches = button.url.match(/@{{\d+}}/g);
+                                        const matches = button.url.match(/{{\d+}}/g);
                                         if (matches) {
                                             form.innerHTML += `<h5>Button ${buttonIndex + 1} Parameters</h5>`;
                                             matches.forEach((match, index) => {
