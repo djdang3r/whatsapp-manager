@@ -3246,9 +3246,17 @@
                 formData.append('jsonBody', JSON.stringify(templateData));
                 formData.append('whatsapp_account_id', $('#whatsapp_business_account_id').val());
 
+                const buttonSubmit = document.getElementById('submitButton');
 
                 // 8. Enviar al backend
                 try {
+                    // Cambiar el estado del botón a "Loading..."
+                    buttonSubmit.innerHTML = `
+                        <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                        Loading...
+                    `;
+                    buttonSubmit.disabled = true;
+
                     const response = await fetch('/template-create', {
                         method: 'POST',
                         headers: {
@@ -3263,6 +3271,10 @@
                 } catch (error) {
                     console.error('Error:', error);
                     showAlert('error', 'Error al crear la plantilla. Por favor, inténtelo de nuevo.');
+                } finally {
+                    // Restaurar el estado original del botón
+                    buttonSubmit.innerHTML = 'Guardar Cambios';
+                    buttonSubmit.disabled = false;
                 }
             }
 
@@ -3295,9 +3307,12 @@
                 }
 
                 const formData = new FormData();
+                const upload_wa_account_id = $('#whatsapp_business_account_id').val();
                 formData.append('file', file);
                 formData.append('type', validTypes[file.type]);
-                formData.append('wa_account_id', '462194216974157');
+                formData.append('wa_account_id', upload_wa_account_id);
+
+
 
                 try {
                     const response = await fetch('/media/upload', {

@@ -368,7 +368,7 @@
                 <!-- Submit -->
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                    <button type="submit" class="btn btn-primary" id="submitButton" name="submitButton">Guardar Cambios</button>
                 </div>
             </form>
         </div>
