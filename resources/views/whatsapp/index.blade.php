@@ -1907,97 +1907,139 @@
                         messageElement.className = "position-relative";
 
                         if (message.message_type === "TEXT") {
+                            let warningHtml = '';
+
+                            if (message.failed_at !== null) {
+                                warningHtml = `
+                                    <div class="alert alert-light-danger" role="alert">
+                                        ${message.title_error}
+                                        <i class="fa fa-info-circle" data-bs-toggle="tooltip" data-bs-placement="top" title="${message.message_error} - ${message.details_error}"></i>
+                                    </div>
+                                `;
+                            }
+
                             messageElement.innerHTML = `
-                    <div class="${isOutgoing ? "chat-box-right" : "chat-box"}">
-                        <div>
-                            <p class="chat-text">${message.message_content}</p>
-                            <p class="text-muted"><i class="ti ti-checks ${
-                                message.readed_at ? "text-primary" : ""
-                            }"></i> ${new Date(
-                        message.created_at
-                    ).toLocaleString()}</p>
-                        </div>
-                    </div>
-                    `;
-                        } else if (message.message_type === "IMAGE") {
-                            messageElement.innerHTML = `
-                    <div class="${isOutgoing ? "chat-box-right" : "chat-box"}">
-                        <div>
-                            <img src="${
-                                message.media_files[0].url
-                            }" alt="" class="img-fluid">
-                            <p class="text-muted"><i class="ti ti-checks ${
-                                message.readed_at ? "text-primary" : ""
-                            }"></i> ${new Date(
-                        message.created_at
-                    ).toLocaleString()}</p>
-                        </div>
-                    </div>
-                    `;
-                        } else if (message.message_type === "DOCUMENT") {
-                            messageElement.innerHTML = `
-                    <div class="${isOutgoing ? "chat-box-right" : "chat-box"}">
-                        <div>
-                            <a href="${
-                                message.media_files[0].url
-                            }" target="_blank" class="btn btn-primary">${
-                        message.message_content
-                    }</a>
-                            <p class="text-muted"><i class="ti ti-checks ${
-                                message.readed_at ? "text-primary" : ""
-                            }"></i> ${new Date(
-                        message.created_at
-                    ).toLocaleString()}</p>
-                        </div>
-                    </div>
-                    `;
-                        } else if (message.message_type === "AUDIO") {
-                            messageElement.innerHTML = `
-                    <div class="${isOutgoing ? "chat-box-right" : "chat-box"}">
-                        <div>
-                            <audio controls>
-                                <source src="${
-                                    message.media_files[0].url
-                                }" type="audio/mpeg">
-                                Your browser does not support the audio element.
-                            </audio>
-                            <p class="text-muted"><i class="ti ti-checks ${
-                                message.readed_at ? "text-primary" : ""
-                            }"></i> ${new Date(
-                        message.created_at
-                    ).toLocaleString()}</p>
-                        </div>
-                    </div>
-                    `;
-                        } else if (message.message_type === "VIDEO") {
-                            messageElement.innerHTML = `
-                    <div class="${isOutgoing ? "chat-box-right" : "chat-box"}">
-                        <div>
-                            <video width="320" height="240" controls>
-                                <source src="${
-                                    message.media_files[0].url
-                                }" type="video/mp4">
-                                Your browser does not support the video tag.
-                            </video>
-                            <p class="text-muted"><i class="ti ti-checks ${
-                                message.readed_at ? "text-primary" : ""
-                            }"></i> ${new Date(
-                        message.created_at
-                    ).toLocaleString()}</p>
-                        </div>
-                    </div>
-                    `;
-                        } else if (message.message_type === "TEMPLATE") {
-                        const templateHtml = renderWhatsAppTemplate(message.message_content, message.json_content);
-                        messageElement.innerHTML = `
-                            <div class="${isOutgoing ? "chat-box-right" : "chat-box"}">
-                                <div>
-                                    ${templateHtml}
-                                    <p class="text-muted"><i class="ti ti-checks ${message.readed_at ? "text-primary" : ""}"></i> ${new Date(message.created_at).toLocaleString()}</p>
+                                <div class="${isOutgoing ? "chat-box-right" : "chat-box"}">
+                                    <div>
+                                        <p class="chat-text">${message.message_content}</p>
+                                        ${warningHtml}
+                                        <p class="text-muted"><i class="ti ti-checks ${message.readed_at ? "text-primary" : ""}"></i> ${new Date(message.created_at).toLocaleString()}</p>
+                                    </div>
                                 </div>
-                            </div>
-                        `;
-                    }
+                            `;
+                        } else if (message.message_type === "IMAGE") {
+                            let warningHtml = '';
+
+                            if (message.failed_at !== null) {
+                                warningHtml = `
+                                    <div class="alert alert-light-danger" role="alert">
+                                        ${message.title_error}
+                                        <i class="fa fa-info-circle" data-bs-toggle="tooltip" data-bs-placement="top" title="${message.message_error} - ${message.details_error}"></i>
+                                    </div>
+                                `;
+                            }
+
+                            messageElement.innerHTML = `
+                                <div class="${isOutgoing ? "chat-box-right" : "chat-box"}">
+                                    <div>
+                                        <img src="${message.media_files[0].url}" alt="" class="img-fluid">
+                                        ${warningHtml}
+                                        <p class="text-muted"><i class="ti ti-checks ${message.readed_at ? "text-primary" : ""}"></i> ${new Date(message.created_at).toLocaleString()}</p>
+                                    </div>
+                                </div>
+                            `;
+                        } else if (message.message_type === "DOCUMENT") {
+                            let warningHtml = '';
+
+                            if (message.failed_at !== null) {
+                                warningHtml = `
+                                    <div class="alert alert-light-danger" role="alert">
+                                        ${message.title_error}
+                                        <i class="fa fa-info-circle" data-bs-toggle="tooltip" data-bs-placement="top" title="${message.message_error} - ${message.details_error}"></i>
+                                    </div>
+                                `;
+                            }
+
+                            messageElement.innerHTML = `
+                                <div class="${isOutgoing ? "chat-box-right" : "chat-box"}">
+                                    <div>
+                                        <a href="${message.media_files[0].url}" target="_blank" class="btn btn-primary">${message.message_content}</a>
+                                        ${warningHtml}
+                                        <p class="text-muted"><i class="ti ti-checks ${message.readed_at ? "text-primary" : ""}"></i> ${new Date(message.created_at).toLocaleString()}</p>
+                                    </div>
+                                </div>
+                            `;
+                        } else if (message.message_type === "AUDIO") {
+                            let warningHtml = '';
+
+                            if (message.failed_at !== null) {
+                                warningHtml = `
+                                    <div class="alert alert-light-danger" role="alert">
+                                        ${message.title_error}
+                                        <i class="fa fa-info-circle" data-bs-toggle="tooltip" data-bs-placement="top" title="${message.message_error} - ${message.details_error}"></i>
+                                    </div>
+                                `;
+                            }
+
+                            messageElement.innerHTML = `
+                                <div class="${isOutgoing ? "chat-box-right" : "chat-box"}">
+                                    <div>
+                                        <audio controls>
+                                            <source src="${message.media_files[0].url}" type="audio/mpeg">
+                                            Your browser does not support the audio element.
+                                        </audio>
+                                        ${warningHtml}
+                                        <p class="text-muted"><i class="ti ti-checks ${message.readed_at ? "text-primary" : ""}"></i> ${new Date(message.created_at).toLocaleString()}</p>
+                                    </div>
+                                </div>
+                            `;
+                        } else if (message.message_type === "VIDEO") {
+                            let warningHtml = '';
+
+                            if (message.failed_at !== null) {
+                                warningHtml = `
+                                    <div class="alert alert-light-danger" role="alert">
+                                        ${message.title_error}
+                                        <i class="fa fa-info-circle" data-bs-toggle="tooltip" data-bs-placement="top" title="${message.message_error} - ${message.details_error}"></i>
+                                    </div>
+                                `;
+                            }
+
+                            messageElement.innerHTML = `
+                                <div class="${isOutgoing ? "chat-box-right" : "chat-box"}">
+                                    <div>
+                                        <video width="320" height="240" controls>
+                                            <source src="${message.media_files[0].url}" type="video/mp4">
+                                            Your browser does not support the video tag.
+                                        </video>
+                                        ${warningHtml}
+                                        <p class="text-muted"><i class="ti ti-checks ${message.readed_at ? "text-primary" : ""}"></i> ${new Date(message.created_at).toLocaleString()}</p>
+                                    </div>
+                                </div>
+                            `;
+                        } else if (message.message_type === "TEMPLATE") {
+                            const templateHtml = renderWhatsAppTemplate(message.message_content, message.json_content);
+                            let warningHtml = '';
+
+                            if (message.failed_at !== null) {
+                                warningHtml = `
+                                    <div class="alert alert-light-danger" role="alert">
+                                        ${message.title_error}
+                                        <i class="fa fa-info-circle" data-bs-toggle="tooltip" data-bs-placement="top" title="${message.message_error} - ${message.details_error}"></i>
+                                    </div>
+                                `;
+                            }
+
+                            messageElement.innerHTML = `
+                                <div class="${isOutgoing ? "chat-box-right" : "chat-box"}">
+                                    <div>
+                                        ${templateHtml}
+                                        ${warningHtml}
+                                        <p class="text-muted"><i class="ti ti-checks ${message.readed_at ? "text-primary" : ""}"></i> ${new Date(message.created_at).toLocaleString()}</p>
+                                    </div>
+                                </div>
+                            `;
+                        }
 
                         chatContainer.appendChild(messageElement);
                     });

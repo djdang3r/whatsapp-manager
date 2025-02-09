@@ -351,6 +351,7 @@ class WhatsappWebhookController extends Controller
                         } elseif ($status['status'] === 'read') {
                             $message->readed_at = now();
                         } elseif ($status['status'] === 'failed') {
+                            Log::info('Message: ' . $messageId . '' . $status['status']);
                             $message->failed_at = now();
                             if (isset($status['errors'][0])) {
                                 $error = $status['errors'][0];
@@ -364,6 +365,27 @@ class WhatsappWebhookController extends Controller
                     }
                 } else {
                     // Manejar el caso donde no hay conversación en la respuesta
+                     // Actualiza el campo conversation_id del mensaje correspondiente
+                     $message = Message::where('wa_id', $messageId)->first();
+
+                     if ($message) {
+                        //  $message->conversation_id = $conversation->conversation_id;
+                         if ($status['status'] === 'delivered') {
+                             $message->delivered_at = now();
+                         } elseif ($status['status'] === 'read') {
+                             $message->readed_at = now();
+                         } elseif ($status['status'] === 'failed') {
+                             $message->failed_at = now();
+                             if (isset($status['errors'][0])) {
+                                 $error = $status['errors'][0];
+                                 $message->code_error = $error['code'] ?? null;
+                                 $message->title_error = $error['title'] ?? null;
+                                 $message->message_error = $error['message'] ?? null;
+                                 $message->details_error = $error['error_data']['details'] ?? null;
+                             }
+                         }
+                         $message->save();
+                     }
                     Log::warning('No conversation data found in the status update', ['status' => $status]);
                 }
             }
@@ -381,6 +403,8 @@ class WhatsappWebhookController extends Controller
         $response = Http::withHeaders([
             'Authorization' => 'Bearer ' . $token,
         ])->get($url);
+
+        Log::info('URL download MULTIMEDIA: ', ['url' => $response]);
 
         $responseData = $response->json();
         return $responseData['url'] ?? null;

@@ -55,4 +55,10 @@ class WhatsappPhoneNumber extends Model
     {
         return $this->belongsTo(WhatsappBusinessProfile::class, 'whatsapp_business_profile_id');
     }
+
+    public function contacts()
+    {
+        return $this->hasManyThrough(Contact::class, Message::class, 'whatsapp_phone_id', 'contact_id', 'whatsapp_phone_id', 'contact_id')
+                    ->distinct();
+    }
 }
