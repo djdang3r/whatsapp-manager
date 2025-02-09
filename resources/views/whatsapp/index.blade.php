@@ -1787,6 +1787,91 @@
                 });
         }
 
+        // function renderWhatsAppTemplate(messageContent, jsonContent) {
+        //     const template = JSON.parse(jsonContent);
+        //     let html = `
+        //         <div class="wb-template col-md-8 col-sm-8 col-12">
+        //             <div class="plantilla-card plantilla-card-header bg-success">
+        //                 <div class="">
+        //                     <div class="factura-title d-flex justify-content-between align-items-center">
+        //                         <a>${template.template.name}</a>
+        //                     </div>
+        //                 </div>
+        //             </div>
+        //             <div class="plantilla-card plantilla-card-content">
+        //                 <div class="">
+        //                     <div class="">
+        //     `;
+
+        //     template.template.components.forEach(component => {
+        //         switch (component.type) {
+        //             case 'header':
+        //                 if (component.parameters && component.parameters.length > 0 && component.parameters[0].type === 'image') {
+        //                     const headerImage = component.parameters[0].image.link;
+        //                     const defaultImage = 'http://127.0.0.1:8000/assets/images/woman-blowing-kiss-whatsapp-messenger-icon.jpg';
+        //                     html += `
+        //                         <div class="plantilla-header">
+        //                             <img src="${headerImage}" alt="Header Image" style="max-width: 100%; height: auto;" onerror="this.onerror=null;this.src='${defaultImage}';">
+        //                         </div>
+        //                     `;
+        //                 }
+        //                 break;
+        //             case 'body':
+        //                 const bodyText = component.text || '';
+        //                 html += `<div class="plantilla-body"><span>${bodyText}</span></div>`;
+        //                 break;
+        //             case 'footer':
+        //                 const footerText = component.text || '';
+        //                 html += `<div class="plantilla-footer"><span>${footerText}</span></div>`;
+        //                 break;
+        //             case 'buttons':
+        //                 component.buttons.forEach(button => {
+        //                     if (button.type === 'URL') {
+        //                         html += `
+        //                             <div class="plantilla-button">
+        //                                 <a href="${button.url}" class="btn btn-primary" target="_blank">${button.text}</a>
+        //                             </div>
+        //                         `;
+        //                     } else if (button.type === 'QUICK_REPLY') {
+        //                         html += `
+        //                             <div class="plantilla-button">
+        //                                 <button class="btn btn-secondary">${button.text}</button>
+        //                             </div>
+        //                         `;
+        //                     }
+        //                 });
+        //                 break;
+        //         }
+        //     });
+
+        //     // Hora como pie de página alineada a la derecha
+        //     html += `<div class="plantilla-time"><time aria-hidden="true" class="">${new Date().toLocaleTimeString()}</time></div>`;
+
+        //     html += '</div></div></div></div>';
+        //     return html;
+        // }
+
+        function renderWhatsAppTemplate(messageContent, jsonContent) {
+            const template = JSON.parse(jsonContent);
+            let html = `
+                <div class="wb-template col-md-12 col-sm-12 col-12">
+                    <div class="plantilla-card plantilla-card-header bg-success">
+                        <div class="">
+                            <div class="factura-title d-flex justify-content-between align-items-center">
+                                <a>${template.template.name}</a>
+                                <button type="button" class="btn btn-sm btn-primary icon-btn b-r-4 ml-2 modal-detailTemplateName" data-bs-toggle="modal" data-bs-target="#modal_detail_template_by_name" data-template-name="${template.template.name}">
+                                    <i class="fa-solid fa-eye fa-fw"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            `;
+
+            return html;
+        }
+
         function loadChatHistory(contactId) {
             const whatsappPhoneNumberId = document.querySelector(
                 "#whatsapp-phone-number-id"
@@ -1902,7 +1987,17 @@
                         </div>
                     </div>
                     `;
-                        }
+                        } else if (message.message_type === "TEMPLATE") {
+                        const templateHtml = renderWhatsAppTemplate(message.message_content, message.json_content);
+                        messageElement.innerHTML = `
+                            <div class="${isOutgoing ? "chat-box-right" : "chat-box"}">
+                                <div>
+                                    ${templateHtml}
+                                    <p class="text-muted"><i class="ti ti-checks ${message.readed_at ? "text-primary" : ""}"></i> ${new Date(message.created_at).toLocaleString()}</p>
+                                </div>
+                            </div>
+                        `;
+                    }
 
                         chatContainer.appendChild(messageElement);
                     });
@@ -2013,8 +2108,7 @@
             // Delegación de eventos para elementos dinámicos
             $(document).on('click', '.modal-detailTemplate', function () {
                 var templateId = $(this).data('template-id');
-                var templateName = $(this).data('template-name');
-                var waTemplateId = $(this).data('template-wa-id');
+
                 var json = {}; // Define el JSON que necesitas enviar
 
                 $.ajax({
@@ -2023,14 +2117,38 @@
                     data: {
                         _token: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
                         json: json,
-                        template_id: templateId,
-                        wa_template_id: waTemplateId
+                        template_id: templateId
                     },
                     success: function (response) {
                         // Manejar la respuesta
                         console.log(response);
                         $('#modal_detail_template_body').html(response);
                         $('#modal_detail_template').modal('show');
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(error);
+                    }
+                });
+            });
+
+            $(document).on('click', '.modal-detailTemplateName', function () {
+                var name = $(this).data('template-name');
+
+                var json = {}; // Define el JSON que necesitas enviar
+
+                $.ajax({
+                    url: '/template-detail-name',
+                    type: 'POST',
+                    data: {
+                        _token: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                        json: json,
+                        name: name
+                    },
+                    success: function (response) {
+                        // Manejar la respuesta
+                        console.log(response);
+                        $('#modal_detail_template_name_body').html(response);
+                        $('#modal_detail_template_name').modal('show');
                     },
                     error: function (xhr, status, error) {
                         console.error(error);

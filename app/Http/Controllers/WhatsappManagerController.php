@@ -490,6 +490,15 @@ class WhatsappManagerController extends Controller
         return $templateDetail;
     }
 
+    public function getTemplateDetailByName(Request $request)
+    {
+        $template = Template::where('name', $request->name)->first();
+        // Llama a la función renderWhatsAppTemplate
+        $templateDetail = $this->renderWhatsAppTemplate($template->json, $template->template_id, $template->wa_template_id);
+
+        return $templateDetail;
+    }
+
     public static function renderWhatsAppTemplate($json, $template_id, $wa_template_id)
     {
         $template = json_decode($json, true);
