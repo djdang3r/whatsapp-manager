@@ -33,6 +33,11 @@ class Message extends Model
         'delivered_at',
         'readed_at',
         'edited_at',
+        'failed_at',
+        'code_error',
+        'title_error',
+        'message_error',
+        'details_error',
         'json',
     ];
 

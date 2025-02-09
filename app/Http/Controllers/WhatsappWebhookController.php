@@ -343,31 +343,28 @@ class WhatsappWebhookController extends Controller
 
                     // Actualiza el campo conversation_id del mensaje correspondiente
                     $message = Message::where('wa_id', $messageId)->first();
+
                     if ($message) {
                         $message->conversation_id = $conversation->conversation_id;
                         if ($status['status'] === 'delivered') {
                             $message->delivered_at = now();
+                        } elseif ($status['status'] === 'read') {
+                            $message->readed_at = now();
+                        } elseif ($status['status'] === 'failed') {
+                            $message->failed_at = now();
+                            if (isset($status['errors'][0])) {
+                                $error = $status['errors'][0];
+                                $message->code_error = $error['code'] ?? null;
+                                $message->title_error = $error['title'] ?? null;
+                                $message->message_error = $error['message'] ?? null;
+                                $message->details_error = $error['error_data']['details'] ?? null;
+                            }
                         }
                         $message->save();
                     }
                 } else {
                     // Manejar el caso donde no hay conversación en la respuesta
                     Log::warning('No conversation data found in the status update', ['status' => $status]);
-                }
-            }
-
-            // Manejar la actualización del estado read por separado
-            if (isset($input['entry'][0]['changes'][0]['value']['statuses'][0])) {
-                $status = $input['entry'][0]['changes'][0]['value']['statuses'][0];
-                $messageId = $status['id'];
-
-                // Actualiza el campo readed_at del mensaje correspondiente
-                if ($status['status'] === 'read') {
-                    $message = Message::where('wa_id', $messageId)->first();
-                    if ($message) {
-                        $message->readed_at = now();
-                        $message->save();
-                    }
                 }
             }
 

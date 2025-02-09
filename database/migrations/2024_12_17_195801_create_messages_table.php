@@ -30,6 +30,11 @@ return new class extends Migration
             $table->string('delivered_at', 45)->nullable();
             $table->string('readed_at', 45)->nullable();
             $table->string('edited_at', 45)->nullable();
+            $table->string('failed_at', 45)->nullable();
+            $table->integer('code_error')->nullable();
+            $table->text('title_error')->nullable();
+            $table->text('message_error')->nullable();
+            $table->text('details_error')->nullable();
             $table->json('json')->nullable();
             $table->boolean('bot')->default(false); // Añadir el campo booleano 'bot'
             $table->timestamps();
