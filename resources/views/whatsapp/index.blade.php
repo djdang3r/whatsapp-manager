@@ -80,6 +80,7 @@
                     <ul class="messages-list mt-3">
                         <li class="messages-list-item">
                             <a href="#" onclick="selectPhoneNumber('{{ $phoneNumber->whatsapp_phone_id }}')">
+                                <input type="hidden" id="{{ $phoneNumber->whatsapp_phone_id }}" name="{{ $phoneNumber->whatsapp_phone_id }}" data-verified_name="{{ $phoneNumber->verified_name }}" data-display_phone_number="{{ $phoneNumber->display_phone_number }}">
                                 <div
                                     class="h-40 w-40 d-flex-center b-r-15 overflow-hidden text-bg-secondary messages-list-avtar">
                                     <img src="{{ $phoneNumber->businessProfile->profile_picture_url }}" alt=""
@@ -310,8 +311,8 @@
                                                         class="position-absolute top-0 end-0 p-1 bg-success border border-light rounded-circle"></span>
                                                 </span>
                                                 <div class="flex-grow-1 ps-2">
-                                                    <div class="fs-6"> Ninfa Monaldo</div>
-                                                    <div class="text-muted f-s-12">Web Developer</div>
+                                                    <div class="fs-6" id="verified_name"> Ninfa Monaldo</div>
+                                                    <div class="text-muted f-s-12" id="display_phone_number">Web Developer</div>
                                                 </div>
                                                 <div>
                                                     <div class="btn-group dropdown-icon-none">
@@ -1254,7 +1255,7 @@
                                         </div>
                                     </div>
                                     <div class="card-body chat-body">
-                                        <div class="chat-container ">
+                                        <div class="chat-container " style="max-height: 461px !important;">
                                             <div class="text-center">
                                                 <span class="badge text-light-secondary">Today</span>
                                             </div>
@@ -1537,6 +1538,7 @@
                 "#whatsapp-phone-number-id"
             ).value;
 
+
             switch ($tabPane) {
                 case "number-profile-tab-pane":
                     loadProfile();
@@ -1545,6 +1547,14 @@
                     loadTemplate(whatsappPhoneNumberId);
                     break;
                 case "whatsapp-chat-tab-pane":
+                    const escapedPhoneNumberId = CSS.escape(phone_number_id);
+                    const inputHiddelPhoneSelected = document.querySelector(`#${escapedPhoneNumberId}`);
+                    const verifiedName = inputHiddelPhoneSelected.getAttribute('data-verified_name');
+                    const displayPhoneNumber = inputHiddelPhoneSelected.getAttribute('data-display_phone_number');
+
+                    document.querySelector('#verified_name').textContent = verifiedName;
+                    document.querySelector('#display_phone_number').textContent = displayPhoneNumber;
+
                     loadChat(whatsappPhoneNumberId);
                     break;
                 case "update-account-tab-pane":
@@ -2069,6 +2079,14 @@
                     loadTemplate();
                     break;
                 case "whatsapp-chat-tab-pane":
+                    const escapedPhoneNumberId = CSS.escape(phone_number_id);
+                    const inputHiddelPhoneSelected = document.querySelector(`#${escapedPhoneNumberId}`);
+                    const verifiedName = inputHiddelPhoneSelected.getAttribute('data-verified_name');
+                    const displayPhoneNumber = inputHiddelPhoneSelected.getAttribute('data-display_phone_number');
+
+                    document.querySelector('#verified_name').textContent = verifiedName;
+                    document.querySelector('#display_phone_number').textContent = displayPhoneNumber;
+
                     loadChat();
                     break;
                 case "update-account-tab-pane":
