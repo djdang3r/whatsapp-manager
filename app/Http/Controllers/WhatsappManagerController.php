@@ -97,7 +97,9 @@ class WhatsappManagerController extends Controller
             return redirect()->back()->with('error', 'Account not found.');
         }
 
-        return view('whatsapp.index', compact('whatsapp_business_account'));
+        $contacts = Contact::all();
+
+        return view('whatsapp.index', compact('whatsapp_business_account', 'contacts'));
     }
 
     public function getPhoneNumbers($whatsapp_business_id)
@@ -1477,5 +1479,20 @@ class WhatsappManagerController extends Controller
             'type' => 'BUTTONS',
             'buttons' => $processedButtons
         ];
+    }
+
+    public function storeContact(Request $request)
+    {
+        $validated = $request->validate([
+            'contact_name' => 'required|string|max:255',
+            'country_code' => 'required|string|max:45',
+            'phone_number' => 'required|string|max:45'
+        ]);
+
+        $validated['wa_id'] = $validated['country_code'] . $validated['phone_number'];
+
+        $contact = Contact::create($validated);
+
+        return response()->json($contact);
     }
 }

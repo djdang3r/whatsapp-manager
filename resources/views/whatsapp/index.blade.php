@@ -766,7 +766,7 @@
                                                 <!-- tab 2 -->
 
                                                 <div id="tab-2" class="tabs-content">
-                                                    <div class="chat-contact tabcontent">
+                                                    {{-- <div class="chat-contact tabcontent">
                                                         <div class="updates-box">
                                                             <div class="b-2-success b-r-50 p-1">
                                                                 <span
@@ -885,7 +885,7 @@
                                                                 <p class="f-s-12 text-secondary mb-0">3:26PM</p>
                                                             </div>
                                                         </div>
-                                                    </div>
+                                                    </div> --}}
 
                                                     <div class="float-end">
                                                         <div class="btn-group dropdown-icon-none">
@@ -912,206 +912,33 @@
 
                                                 <!-- tab 3 -->
 
-                                                <div id="tab-3" class="tabs-content">
-                                                    <div class="chat-contact tabcontent chat-contact-list">
-                                                        <div class=" d-flex align-items-center py-3">
+                                                <div id="tab-3" class="tabs-content chat-contact-list">
+                                                    @foreach($contacts as $contact)
+                                                        <div class="d-flex align-items-center py-3" onClick="loadChatHistory('{{ $contact->contact_id }}')">
                                                             <div>
-                                                                <span
-                                                                    class="h-40 w-40 d-flex-center b-r-50 position-relative bg-info">
-                                                                    <img src="../assets/images/avtar/13.png"
-                                                                        alt="" class="img-fluid b-r-50">
-                                                                    <span
-                                                                        class="position-absolute top-0 end-0 p-1 bg-success border border-light rounded-circle"></span>
+                                                                <span class="h-40 w-40 d-flex-center b-r-50 position-relative bg-info">
+                                                                    <img src="{{ $contact->profile_image_url ?? '../assets/images/avtar/13.png' }}" alt="" class="img-fluid b-r-50">
+                                                                    <span class="position-absolute top-0 end-0 p-1 bg-success border border-light rounded-circle"></span>
                                                                 </span>
                                                             </div>
                                                             <div class="flex-grow-1 ps-2">
-                                                                <p class="contact-name text-dark mb-0 f-w-500">Bette
-                                                                    Hagenes</p>
-                                                                <p class="mb-0 text-secondary f-s-13">+978356479</p>
+                                                                <p class="contact-name text-dark mb-0 f-w-500">{{ $contact->contact_name }}</p>
+                                                                <p class="mb-0 text-secondary f-s-13">{{ $contact->phone_number }}</p>
                                                             </div>
                                                             <div>
-                                                                <span
-                                                                    class="h-35 w-35 text-outline-success d-flex-center b-r-50">
+                                                                <span class="h-35 w-35 text-outline-success d-flex-center b-r-50">
                                                                     <i class="ti ti-phone-call"></i>
                                                                 </span>
                                                             </div>
                                                             <div>
-                                                                <span
-                                                                    class="h-35 w-35 text-outline-primary d-flex-center b-r-50 ms-1">
+                                                                <span class="h-35 w-35 text-outline-primary d-flex-center b-r-50 ms-1">
                                                                     <i class="ti ti-video"></i>
                                                                 </span>
                                                             </div>
                                                         </div>
-                                                        <div class="d-flex align-items-center py-3">
-                                                            <div>
-                                                                <span
-                                                                    class="h-40 w-40 d-flex-center b-r-50 position-relative bg-danger">
-                                                                    <img src="../assets/images/avtar/12.png"
-                                                                        alt="" class="img-fluid b-r-50">
-                                                                    <span
-                                                                        class="position-absolute top-0 end-0 p-1 bg-success border border-light rounded-circle"></span>
-                                                                </span>
-                                                            </div>
-                                                            <div class="flex-grow-1 ps-2">
-                                                                <p class="contact-name text-dark mb-0 f-w-500">Fleta Walsh
-                                                                </p>
-                                                                <p class="mb-0 text-secondary f-s-13">+988456479</p>
-                                                            </div>
-                                                            <div>
-                                                                <span
-                                                                    class="h-35 w-35 text-outline-success d-flex-center b-r-50">
-                                                                    <i class="ti ti-phone-call"></i>
-                                                                </span>
-                                                            </div>
-                                                            <div>
-                                                                <span
-                                                                    class="h-35 w-35 text-outline-primary d-flex-center b-r-50 ms-1">
-                                                                    <i class="ti ti-video"></i>
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="d-flex align-items-center py-3">
-                                                            <div>
-                                                                <span
-                                                                    class="h-40 w-40 d-flex-center b-r-50 position-relative bg-warning">
-                                                                    <img src="../assets/images/avtar/11.png"
-                                                                        alt="" class="img-fluid b-r-50">
-                                                                    <span
-                                                                        class="position-absolute top-0 end-0 p-1 bg-success border border-light rounded-circle"></span>
-                                                                </span>
-                                                            </div>
-                                                            <div class="flex-grow-1 ps-2">
-                                                                <p class="contact-name text-dark mb-0 f-w-500">Lenora
-                                                                    Bogisich</p>
-                                                                <p class="mb-0 text-secondary f-s-13">+4583546479</p>
-                                                            </div>
-                                                            <div>
-                                                                <span
-                                                                    class="h-35 w-35 text-outline-success d-flex-center b-r-50">
-                                                                    <i class="ti ti-phone-call"></i>
-                                                                </span>
-                                                            </div>
-                                                            <div>
-                                                                <span
-                                                                    class="h-35 w-35 text-outline-primary d-flex-center b-r-50 ms-1">
-                                                                    <i class="ti ti-video"></i>
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="d-flex align-items-center py-3">
-                                                            <div>
-                                                                <span
-                                                                    class="h-40 w-40 d-flex-center b-r-50 position-relative bg-success">
-                                                                    <img src="../assets/images/avtar/10.png"
-                                                                        alt="" class="img-fluid b-r-50">
-                                                                    <span
-                                                                        class="position-absolute top-0 end-0 p-1 bg-secondary border border-light rounded-circle"></span>
-                                                                </span>
-                                                            </div>
-                                                            <div class="flex-grow-1 ps-2">
-                                                                <p class="contact-name text-dark mb-0 f-w-500">Emery
-                                                                    McKenzie</p>
-                                                                <p class="mb-0 text-secondary f-s-13">+378356479</p>
-                                                            </div>
-                                                            <div>
-                                                                <span
-                                                                    class="h-35 w-35 text-outline-success d-flex-center b-r-50">
-                                                                    <i class="ti ti-phone-call"></i>
-                                                                </span>
-                                                            </div>
-                                                            <div>
-                                                                <span
-                                                                    class="h-35 w-35 text-outline-primary d-flex-center b-r-50 ms-1">
-                                                                    <i class="ti ti-video"></i>
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="d-flex align-items-center py-3">
-                                                            <div>
-                                                                <span
-                                                                    class="h-40 w-40 d-flex-center b-r-50 position-relative bg-danger">
-                                                                    <img src="../assets/images/avtar/08.png"
-                                                                        alt="" class="img-fluid b-r-50">
-                                                                    <span
-                                                                        class="position-absolute top-0 end-0 p-1 bg-success border border-light rounded-circle"></span>
-                                                                </span>
-                                                            </div>
-                                                            <div class="flex-grow-1 ps-2">
-                                                                <p class="contact-name text-dark mb-0 f-w-500">Elmer</p>
-                                                                <p class="mb-0 text-secondary f-s-13">+678356270</p>
-                                                            </div>
-                                                            <div>
-                                                                <span
-                                                                    class="h-35 w-35 text-outline-success d-flex-center b-r-50">
-                                                                    <i class="ti ti-phone-call"></i>
-                                                                </span>
-                                                            </div>
-                                                            <div>
-                                                                <span
-                                                                    class="h-35 w-35 text-outline-primary d-flex-center b-r-50 ms-1">
-                                                                    <i class="ti ti-video"></i>
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="d-flex align-items-center py-3">
-                                                            <div>
-                                                                <span
-                                                                    class="h-40 w-40 d-flex-center b-r-50 position-relative bg-success">
-                                                                    <img src="../assets/images/avtar/09.png"
-                                                                        alt="" class="img-fluid b-r-50">
-                                                                    <span
-                                                                        class="position-absolute top-0 end-0 p-1 bg-success border border-light rounded-circle"></span>
-                                                                </span>
-                                                            </div>
-                                                            <div class="flex-grow-1 ps-2">
-                                                                <p class="contact-name text-dark mb-0 f-w-500">Mark Walsh
-                                                                </p>
-                                                                <p class="mb-0 text-secondary f-s-13">+780356479</p>
-                                                            </div>
-                                                            <div>
-                                                                <span
-                                                                    class="h-35 w-35 text-outline-success d-flex-center b-r-50">
-                                                                    <i class="ti ti-phone-call"></i>
-                                                                </span>
-                                                            </div>
-                                                            <div>
-                                                                <span
-                                                                    class="h-35 w-35 text-outline-primary d-flex-center b-r-50 ms-1">
-                                                                    <i class="ti ti-video"></i>
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                        <div class="d-flex align-items-center py-3">
-                                                            <div>
-                                                                <span
-                                                                    class="h-40 w-40 d-flex-center b-r-50 position-relative bg-warning">
-                                                                    <img src="../assets/images/avtar/07.png"
-                                                                        alt="" class="img-fluid b-r-50">
-                                                                    <span
-                                                                        class="position-absolute top-0 end-0 p-1 bg-success border border-light rounded-circle"></span>
-                                                                </span>
-                                                            </div>
-                                                            <div class="flex-grow-1 ps-2">
-                                                                <p class="contact-name text-dark mb-0 f-w-500">Sue Flay</p>
-                                                                <p class="mb-0 text-secondary f-s-13">+780356479</p>
-                                                            </div>
-                                                            <div>
-                                                                <span
-                                                                    class="h-35 w-35 text-outline-success d-flex-center b-r-50">
-                                                                    <i class="ti ti-phone-call"></i>
-                                                                </span>
-                                                            </div>
-                                                            <div>
-                                                                <span
-                                                                    class="h-35 w-35 text-outline-primary d-flex-center b-r-50 ms-1">
-                                                                    <i class="ti ti-video"></i>
-                                                                </span>
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
+                                                    @endforeach
                                                     <div class="float-end">
-                                                        <div class="btn-group dropdown-icon-none">
+                                                        {{-- <div class="btn-group dropdown-icon-none">
                                                             <button
                                                                 class="btn btn-primary icon-btn b-r-22 dropdown-toggle active"
                                                                 type="button" data-bs-toggle="dropdown"
@@ -1129,7 +956,12 @@
                                                                             class="f-s-13">New Contact</span></a>
                                                                 </li>
                                                             </ul>
-                                                        </div>
+                                                        </div> --}}
+                                                        <button
+                                                            class="btn btn-primary h-45 w-45 icon-btn b-r-22"
+                                                            type="button" data-bs-toggle="modal" data-bs-target="#addContactModal">
+                                                            <i class="ti ti-plus"></i>
+                                                        </button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -1505,6 +1337,7 @@
     @include('whatsapp.modals.modal-edit-template')
     @include('whatsapp.modals.modal-send-template')
     @include('whatsapp.modals.modal-delete-template')
+    @include('whatsapp.modals.modal-add-contact')
 @stop
 
 @section('js')
@@ -3564,6 +3397,58 @@
             // Attach submit event to the form
             document.getElementById('createTemplateForm').addEventListener('submit', submitCreateTemplateForm);
 
+        });
+
+        document.getElementById('addContactForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            const formData = new FormData(this);
+
+            fetch('/new-contact', {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                },
+                body: formData
+            })
+            .then(response => response.json())
+            .then(contact => {
+                // Crear el nuevo elemento de contacto
+                const contactElement = document.createElement('div');
+                contactElement.className = 'd-flex align-items-center py-3';
+                contactElement.setAttribute('onClick', `loadChatHistory('${contact.contact_id}')`);
+                contactElement.innerHTML = `
+                    <div>
+                        <span class="h-40 w-40 d-flex-center b-r-50 position-relative bg-info">
+                            <img src="${contact.profile_image_url ?? '../assets/images/avtar/13.png'}" alt="" class="img-fluid b-r-50">
+                            <span class="position-absolute top-0 end-0 p-1 bg-success border border-light rounded-circle"></span>
+                        </span>
+                    </div>
+                    <div class="flex-grow-1 ps-2">
+                        <p class="contact-name text-dark mb-0 f-w-500">${contact.contact_name}</p>
+                        <p class="mb-0 text-secondary f-s-13">${contact.phone_number}</p>
+                    </div>
+                `;
+
+                // Agregar el nuevo contacto al principio del contenedor
+                const contactList = document.querySelector('.chat-contact-list');
+                contactList.insertBefore(contactElement, contactList.firstChild);
+
+                // Cerrar el modal
+                const addContactModal = new bootstrap.Modal(document.getElementById('addContactModal'));
+                addContactModal.hide();
+
+                // Limpiar el formulario
+                document.getElementById('addContactForm').reset();
+
+                showAlert('success', 'Contacto agregado correctamente');
+                closeModal('modal_add_contact');
+                $('body').removeClass('modal-open').css('padding-right', '');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error al agregar el contacto.');
+            });
         });
     </script>
     @endverbatim

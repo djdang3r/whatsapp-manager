@@ -32,6 +32,7 @@ Route::middleware([
     Route::get('/whatsapp-chat/{phone_number_id}', [WhatsappManagerController::class, 'getConversations'])->name('get_chat');
     Route::get('/chat-history/{contactId}/{phone_number_id}', [WhatsappManagerController::class, 'getChatHistory'])->name('get_chat');
     Route::post('/send-message', [WhatsappManagerController::class, 'sendMessage'])->name('send_message');
+    Route::post('/new-contact', [WhatsappManagerController::class, 'storeContact'])->name('new_contact');
 
     Route::post('/template-detail', [WhatsappManagerController::class, 'getTemplateDetail'])->name('template.detail');
     Route::post('/template-detail-name', [WhatsappManagerController::class, 'getTemplateDetailByName'])->name('template.detail.name');

@@ -7,6 +7,9 @@
 <!-- phosphor js -->
 <script src="../assets/vendor/phosphor/phosphor.js"></script>
 
+<!-- js -->
+<script src="../assets/js/animation.js"></script>
+
 <!--Prism JS-->
 <script src="../assets/vendor/prism/prism.min.js"></script>
 
@@ -34,6 +37,8 @@
 
 <!-- Glight js -->
 <script src="../assets/vendor/glightbox/glightbox.min.js"></script>
+
+<script src="../assets/js/chat.js"></script>
 
 <!-- Ecommerce js-->
 {{-- <script src="../assets/js/ecommerce_dashboard.js"></script> --}}
