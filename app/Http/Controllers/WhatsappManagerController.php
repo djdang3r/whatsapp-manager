@@ -486,8 +486,9 @@ class WhatsappManagerController extends Controller
     public function getTemplateDetail(Request $request)
     {
         $template = Template::find($request->template_id);
+
         // Llama a la función renderWhatsAppTemplate
-        $templateDetail = $this->renderWhatsAppTemplate($template->json, $template->template_id, $template->wa_template_id);
+        $templateDetail = $this->renderWhatsAppTemplate($template->json);
 
         return $templateDetail;
     }
@@ -501,7 +502,7 @@ class WhatsappManagerController extends Controller
         return $templateDetail;
     }
 
-    public static function renderWhatsAppTemplate($json, $template_id, $wa_template_id)
+    public static function renderWhatsAppTemplate($json, $template_id = null, $wa_template_id = null)
     {
         $template = json_decode($json, true);
         $html = '<div class="wb-template col-md-8 col-sm-8 col-12">
@@ -590,6 +591,19 @@ class WhatsappManagerController extends Controller
             $text = str_replace($placeholder, htmlspecialchars($param), $text);
         }
         return $text;
+    }
+
+    public function showTemplate($id)
+    {
+
+
+        $template = Template::findOrFail($id);
+
+        $template_render = $this->renderWhatsAppTemplate($template->json);
+
+        return response()->json(['html' => $template_render]);
+
+
     }
 
     public function getTemplateJson(Request $request)
@@ -948,6 +962,60 @@ class WhatsappManagerController extends Controller
         }
 
         return response()->json(['error' => 'Datos incompletos.'], 400);
+    }
+
+    public function sendMassiveMessage(Request $request)
+    {
+        $validated = $request->validate([
+            'contacts' => 'required|array',
+            'contacts.*' => 'exists:contacts,contact_id',
+            'template_id' => 'required|exists:templates,template_id',
+        ]);
+
+        $contacts = Contact::whereIn('contact_id', $validated['contacts'])->get();
+        $templateId = $validated['template_id'];
+
+        // Recopilar los datos de los campos dinámicos
+        $params = array_filter($request->all(), function($key) {
+            return strpos($key, 'param_') === 0;
+        }, ARRAY_FILTER_USE_KEY);
+
+        $successfulMessages = [];
+        $failedMessages = [];
+
+        foreach ($contacts as $contact) {
+            $countryCode = $contact->country_code;
+            $phoneNumber = $contact->phone_number;
+            $recipient = $countryCode . $phoneNumber;
+
+            // Crear una nueva solicitud para cada contacto
+            $newRequest = new Request([
+                'send_template_id' => $templateId,
+                'countryCode' => $countryCode,
+                'phoneNumber' => $phoneNumber,
+            ] + $params);
+
+            // Llamar a la función sendTemplate para enviar el mensaje
+            $response = $this->sendTemplate($newRequest);
+
+            // Verificar si la respuesta es exitosa
+            if ($response->getStatusCode() === 200) {
+                $successfulMessages[] = $recipient;
+            } else {
+                $failedMessages[] = [
+                    'recipient' => $recipient,
+                    'error' => $response->getContent()
+                ];
+            }
+        }
+
+        return response()->json([
+            'message' => 'Mensajes enviados con éxito.',
+            'successful' => count($successfulMessages),
+            'failed' => count($failedMessages),
+            'successfulMessages' => $successfulMessages,
+            'failedMessages' => $failedMessages
+        ], 200);
     }
 
     private function formatPayloadToHtml($payload)

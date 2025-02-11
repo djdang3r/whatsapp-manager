@@ -34,12 +34,14 @@ Route::middleware([
     Route::post('/send-message', [WhatsappManagerController::class, 'sendMessage'])->name('send_message');
     Route::post('/new-contact', [WhatsappManagerController::class, 'storeContact'])->name('new_contact');
 
+    Route::get('/template-selected/{templateId}', [WhatsappManagerController::class, 'showTemplate'])->name('template.detail');
     Route::post('/template-detail', [WhatsappManagerController::class, 'getTemplateDetail'])->name('template.detail');
     Route::post('/template-detail-name', [WhatsappManagerController::class, 'getTemplateDetailByName'])->name('template.detail.name');
     Route::post('/template-json', [WhatsappManagerController::class, 'getTemplateJson'])->name('template.json');
     Route::post('/template-create', [WhatsappManagerController::class, 'createTemplate'])->name('template.create');
     Route::post('/template-update', [WhatsappManagerController::class, 'updateTemplate'])->name('template.update');
     Route::post('/send-template', [WhatsappManagerController::class, 'sendTemplate'])->name('template.send');
+    Route::post('/send-massive-message', [WhatsappManagerController::class, 'sendMassiveMessage'])->name('template.send');
     Route::post('/media/upload', [WhatsappManagerController::class, 'uploadMedia']);
 });
 
