@@ -346,10 +346,15 @@ class WhatsappWebhookController extends Controller
 
                     if ($message) {
                         $message->conversation_id = $conversation->conversation_id;
+
+                        if ($status['status']) {
+                            $message->status = strtoupper($status['status']);
+                        }
+
                         if ($status['status'] === 'delivered') {
-                            $message->delivered_at = now();
+                            $message->delivered_at = $status['timestamp'] ?? null;
                         } elseif ($status['status'] === 'read') {
-                            $message->readed_at = now();
+                            $message->readed_at = $status['read'] ? now() : null;
                         } elseif ($status['status'] === 'failed') {
                             Log::info('Message: ' . $messageId . '' . $status['status']);
                             $message->failed_at = now();

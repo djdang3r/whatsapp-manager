@@ -53,4 +53,20 @@ class Contact extends Model
     {
         return $this->messages()->whereNull('readed_at')->where('message_method', 'INPUT')->count();
     }
+
+    public function campaigns()
+    {
+        return $this->belongsToMany(Campaign::class, 'campaign_contact')
+            ->withPivot('status', 'sent_at', 'delivered_at', 'read_at');
+    }
+
+    public function campaignResponses()
+    {
+        return $this->hasManyThrough(
+            CampaignMetric::class,
+            CampaignContact::class,
+            'contact_id',
+            'campaign_id'
+        );
+    }
 }

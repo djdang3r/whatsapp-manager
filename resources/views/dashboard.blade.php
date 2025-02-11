@@ -103,16 +103,10 @@
                                                     style="width: 40.9844px;">Whatsapp Business Id</th>
                                                 <th class="sorting" tabindex="0" aria-controls="recentOrders"
                                                     rowspan="1" colspan="1"
-                                                    aria-label="Qty: activate to sort column ascending"
-                                                    style="width: 28.4531px;">App ID</th>
+                                                    aria-label="Qty: activate to sort column ascending">App ID</th>
                                                 <th class="sorting" tabindex="0" aria-controls="recentOrders"
                                                     rowspan="1" colspan="1"
-                                                    aria-label="Status: activate to sort column ascending"
-                                                    style="width: 77.3281px;">Webhook Token</th>
-                                                <th class="sorting" tabindex="0" aria-controls="recentOrders"
-                                                    rowspan="1" colspan="1"
-                                                    aria-label="Status: activate to sort column ascending"
-                                                    style="width: 77.3281px;">Actions</th>
+                                                    aria-label="Status: activate to sort column ascending">Actions</th>
                                             </tr>
                                         </thead>
                                     </table>
@@ -181,7 +175,6 @@
                 columns: [
                     { data: 'whatsapp_business_id', name: 'whatsapp_business_id' },
                     { data: 'app_id', name: 'app_id' },
-                    { data: 'webhook_token', name: 'webhook_token' },
                     {
                         data: null,
                         name: 'actions',

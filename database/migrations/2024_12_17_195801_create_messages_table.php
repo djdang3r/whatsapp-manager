@@ -27,6 +27,7 @@ return new class extends Migration
             $table->string('message_context', 45)->nullable();
             $table->string('caption', 45)->nullable();
             $table->json('json_content')->nullable();
+            $table->string('status', 45)->nullable();
             $table->string('delivered_at', 45)->nullable();
             $table->string('readed_at', 45)->nullable();
             $table->string('edited_at', 45)->nullable();

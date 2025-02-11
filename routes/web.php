@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\WhatsappWebhookController;
 use App\Http\Controllers\WhatsappManagerController;
+use App\Http\Controllers\CampaignController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -43,5 +44,12 @@ Route::middleware([
     Route::post('/send-template', [WhatsappManagerController::class, 'sendTemplate'])->name('template.send');
     Route::post('/send-massive-message', [WhatsappManagerController::class, 'sendMassiveMessage'])->name('template.send');
     Route::post('/media/upload', [WhatsappManagerController::class, 'uploadMedia']);
+
+    // Ruta para mostrar el formulario de creación (GET)
+    Route::get('/campaigns/create', [CampaignController::class, 'create'])->name('campaigns.create');
+
+    // Ruta para procesar el envío del formulario (POST)
+    Route::post('/campaigns', [CampaignController::class, 'store'])->name('campaigns.store');
+
 });
 

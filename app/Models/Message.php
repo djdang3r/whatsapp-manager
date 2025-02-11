@@ -30,6 +30,7 @@ class Message extends Model
         'message_context',
         'caption',
         'json_content',
+        'status',
         'delivered_at',
         'readed_at',
         'edited_at',

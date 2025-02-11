@@ -132,6 +132,11 @@
                             data-bs-target="#massive-messagfes-tab-pane" type="button" role="tab"
                             aria-controls="massive-messagfes-tab-pane" aria-selected="false">Massive Messages</button>
                     </li>
+                    <li class="nav-item" role="presentation" onclick="selectTabPane('campaigns-tab-pane')">
+                        <button class="nav-link" id="campaigns-tab" data-bs-toggle="tab"
+                            data-bs-target="#campaigns-tab-pane" type="button" role="tab"
+                            aria-controls="campaigns-tab-pane" aria-selected="false">Campaigns</button>
+                    </li>
                     <li class="nav-item" role="presentation" onclick="selectTabPane('update-account-tab-pane')">
                         <button class="nav-link" id="update-account-tab" data-bs-toggle="tab"
                             data-bs-target="#update-account-tab-pane" type="button" role="tab"
@@ -1434,6 +1439,27 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+
+                    <div class="tab-pane fade" id="campaigns-tab-pane" role="tabpanel">
+                        <form action="{{ route('campaigns.store') }}" method="POST">
+                            @csrf
+
+                            <select name="type">
+                                <option value="INMEDIATA">Envío Inmediato</option>
+                                <option value="PROGRAMADA">Programada</option>
+                            </select>
+
+                            <input type="datetime-local" name="scheduled_at">
+
+                            <select name="template_id">
+                                @foreach($whatsapp_business_account->templates as $template)
+                                    <option value="{{ $template->template_id }}">{{ $template->name }}</option>
+                                @endforeach
+                            </select>
+
+                            <button type="submit">Crear Campaña</button>
+                        </form>
                     </div>
 
                     <div class="tab-pane fade" id="update-account-tab-pane" role="tabpanel"

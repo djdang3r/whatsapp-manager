@@ -19,4 +19,6 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
-    })->create();
+    })
+    ->withCommands() // 👈 Añade esta línea
+    ->create();
