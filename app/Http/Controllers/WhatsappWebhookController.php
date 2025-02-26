@@ -375,6 +375,10 @@ class WhatsappWebhookController extends Controller
 
                      if ($message) {
                         //  $message->conversation_id = $conversation->conversation_id;
+                        if ($status['status']) {
+                            $message->status = strtoupper($status['status']);
+                        }
+
                          if ($status['status'] === 'delivered') {
                              $message->delivered_at = now();
                          } elseif ($status['status'] === 'read') {

@@ -1442,24 +1442,160 @@
                     </div>
 
                     <div class="tab-pane fade" id="campaigns-tab-pane" role="tabpanel">
-                        <form action="{{ route('campaigns.store') }}" method="POST">
+                        <form action="{{ route('campaigns.store') }}" method="POST" class="row">
                             @csrf
+                            <div class="col-md-2">
+                                <div class="mb-3">
+                                    <select class="form-control">
+                                        <option value="INMEDIATA">Envío Inmediato</option>
+                                        <option value="PROGRAMADA">Programada</option>
+                                    </select>
+                                </div>
+                            </div>
 
-                            <select name="type">
-                                <option value="INMEDIATA">Envío Inmediato</option>
-                                <option value="PROGRAMADA">Programada</option>
-                            </select>
+                            <div class="col-md-3">
+                                <div class="mb-3">
+                                    <input type="datetime-local" class="form-control" name="scheduled_at">
+                                </div>
+                            </div>
 
-                            <input type="datetime-local" name="scheduled_at">
+                            <div class="col-md-3">
+                                <div class="mb-3">
+                                    <select class="form-control" id="templateSelectCampaigns" name="template_id">
+                                        <option selected disabled value="">Choose a template...</option>
+                                        @foreach($whatsapp_business_account->templates as $template)
+                                            <option value="{{ $template->template_id }}">{{ $template->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
 
-                            <select name="template_id">
-                                @foreach($whatsapp_business_account->templates as $template)
-                                    <option value="{{ $template->template_id }}">{{ $template->name }}</option>
-                                @endforeach
-                            </select>
-
-                            <button type="submit">Crear Campaña</button>
+                            <div class="col-md-3">
+                                <div class="mb-3">
+                                    <button type="submit" class="btn btn-primary active"> <i
+                                        class="ti ti-download"></i> Crear Campaña</button>
+                                </div>
+                            </div>
                         </form>
+
+                        <div class="row">
+                            <div class="col-md-6 col-xxl-4">
+                                <div class="card equal-card top-product-card">
+                                  <div class="card-header card-header-title">
+                                    <div class="d-flex">
+                                      <div>
+                                        <h5>Contacts List</h5>
+                                        <p class="text-secondary mb-0">Seleccione contactos</p>
+                                      </div>
+                                      <div>
+
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="card-body">
+                                    <button type="button" class="btn btn-primary mb-3" id="selectAllBtnCampaigns">Select All</button>
+                                    <!-- filepath: /c:/laragon/www/whatsapp-manager/resources/views/whatsapp/index.blade.php -->
+                                    <div class="table-responsive app-scroll">
+                                        @foreach($contacts as $contact)
+                                            <div class="d-flex align-items-center py-3">
+                                                <div>
+                                                    <input class="form-check-input contact-checkbox-campaigns mg-2 mr-5" type="checkbox" value="{{ $contact->contact_id }}">
+                                                </div>
+                                                <div>
+                                                    <span class="h-40 w-40 d-flex-center b-r-50 position-relative bg-info">
+                                                        <img src="{{ $contact->profile_image_url ?? '../assets/images/avtar/13.png' }}" alt="" class="img-fluid b-r-50">
+                                                        <span class="position-absolute top-0 end-0 p-1 bg-success border border-light rounded-circle"></span>
+                                                    </span>
+                                                </div>
+                                                <div class="flex-grow-1 ps-2">
+                                                    <p class="contact-name text-dark mb-0 f-w-500">{{ $contact->contact_name }}</p>
+                                                    <p class="mb-0 text-secondary f-s-13">+{{ $contact->country_code.' '.$contact->phone_number }}</p>
+                                                </div>
+                                                <div>
+                                                    <span class="h-35 w-35 text-outline-success d-flex-center b-r-50">
+                                                        <i class="ti ti-phone-call"></i>
+                                                    </span>
+                                                </div>
+                                                <div>
+                                                    <span class="h-35 w-35 text-outline-primary d-flex-center b-r-50 ms-1">
+                                                        <i class="ti ti-video"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        @endforeach
+                                    </div>
+                                  </div>
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-6 col-xxl-4">
+                                <div class="card equal-card top-product-card">
+                                  <div class="card-header card-header-title">
+                                    <div class="d-flex">
+                                      <div>
+                                        <h5>Templates</h5>
+                                        <p class="text-secondary mb-0">Seleccione plantilla</p>
+                                      </div>
+
+                                      <div>
+
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="card-body">
+                                    <div class="able-responsive app-scroll">
+                                        {{-- <select class="form-control" id="templateSelect" name="template_id">
+                                            <option selected disabled value="">Choose a template...</option>
+                                            @foreach($whatsapp_business_account->templates as $template)
+                                                <option value="{{ $template->template_id }}">{{ $template->name }}</option>
+                                            @endforeach
+                                        </select> --}}
+                                    </div>
+                                    <div class="table-responsive app-scroll mt-10" id="render_view_template_campaigns">
+
+                                    </div>
+                                  </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 col-lg-5 col-xxl-4">
+                                <div class="card active-user-card">
+                                    <div class="card-body">
+                                        <div class="">
+                                            <h5 class="text-dark">Mensajes Masivos</h5>
+                                        </div>
+                                        <div class="d-flex gap-2 mt-3 mb-5">
+                                            <div class="active-user-content">
+                                                <h2 class="text-primary mb-0" id="count_contacts_campaigns">0</h2>
+                                                <p class="text-secondary text-nowrap mb-0">Contactos seleccionados</p>
+                                            </div>
+                                        </div>
+                                        <div id='campaigns_fields'>
+                                        </div>
+                                        <div class="d-flex gap-3 align-items-center mt-5">
+                                            <div>
+                                                <h5 class="mb-0 text-primary f-w-600" id="campaign_sended">0</h5>
+                                                <p class="f-s-16 text-secondary mb-0">Enviados</p>
+                                            </div>
+                                            <div>
+                                                <h5 class="mb-0 text-success f-w-600" id="campaign_success">0</h5>
+                                                <p class="f-s-16 text-secondary mb-0">Exitosos</p>
+                                            </div>
+                                            <div>
+                                                <h5 class="mb-0 text-danger f-w-600" id="campaign_error">0</h5>
+                                                <p class="f-s-16 text-secondary mb-0">No enviados</p>
+                                            </div>
+                                        </div>
+                                        <div class="active-users-content mt-3">
+                                            <div>
+                                                {{-- <button type="button" class="btn btn-primary" id="sendMassiveMessageBtn">Enviar</button> --}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="tab-pane fade" id="update-account-tab-pane" role="tabpanel"
@@ -1659,7 +1795,7 @@
                     }
 
                     // Procesa los datos de la plantilla aquí
-                    console.log(data);
+                    // console.log(data);
                     // Llenar la tabla con los datos de la plantilla
                     const tbody = document.getElementById("t-data");
                     tbody.innerHTML = ""; // Limpiar el contenido existente
@@ -1733,8 +1869,7 @@
                         return;
                     }
 
-                    // Procesa los datos de la plantilla aquí
-                    console.log(data);
+                    // console.log(data);
                     const contactsContainer = document.querySelector(".chat-contact");
                     contactsContainer.innerHTML = ""; // Limpiar el contenido existente
 
@@ -2166,7 +2301,7 @@
                     },
                     success: function (response) {
                         // Manejar la respuesta
-                        console.log(response);
+                        // console.log(response);
                         $('#modal_detail_template_body').html(response);
                         $('#modal_detail_template').modal('show');
                     },
@@ -2191,7 +2326,7 @@
                     },
                     success: function (response) {
                         // Manejar la respuesta
-                        console.log(response);
+                        // console.log(response);
                         $('#modal_detail_template_name_body').html(response);
                         $('#modal_detail_template_name').modal('show');
                     },
@@ -2261,7 +2396,7 @@
                             </div>
                         `;
 
-                        console.log(data.components);
+                        // console.log(data.components);
                         // Añadir campos dinámicos basados en los parámetros de la plantilla
                         data.components.forEach(component => {
                             if (component.type === 'HEADER' && component.text) {
@@ -2279,9 +2414,9 @@
                                     });
                                 }
                             } else if (component.type === 'BODY' && component.text) {
-                                console.log(component);
+                                // console.log(component);
                                 const matches = component.text.match(/{{\d+}}/g);
-                                console.log("Matches: " + matches);
+                                // console.log("Matches: " + matches);
                                 if (matches) {
                                     form.innerHTML += `<h5>BODY Parameters</h5>`;
                                     matches.forEach((match, index) => {
@@ -2344,7 +2479,7 @@
                     type: 'POST',
                     data: formData,
                     success: function(response) {
-                        console.log('Éxito:', response);
+                        // console.log('Éxito:', response);
                         closeModal('modal_send_template');
                         $('body').removeClass('modal-open').css('padding-right', '');
                         showAlert('success', 'Mensaje de Plantilla Enviado Satistactoriamente.');
@@ -3021,7 +3156,7 @@
             function updateButtonStatus() {
                 $('.dropdown-item').each(function() {
                     const type = $(this).data('type');
-                    console.log(`Processing type: ${type}`);
+                    // console.log(`Processing type: ${type}`);
                     if (type !== 'quick_replay_personalizado') {
                         const template = buttonTemplates[type];
                         if (template) {
@@ -3184,7 +3319,7 @@
 
                 const formData = new FormData();
 
-                console.log(templateData);
+                // console.log(templateData);
 
                 if (templateData.category !== 'AUTHENTICATION' && !$('#createBodyText').val()) {
                     showAlert('error', 'El texto del cuerpo es requerido');
@@ -3200,7 +3335,7 @@
                 }
 
                 if (templateData.category === 'AUTHENTICATION') {
-                    console.log('AUTHENTICATION');
+                    // console.log('AUTHENTICATION');
                     if (!$('#autocompletar_sin_toque_condiciones').is(':checked')) {
                         showAlert('error', 'Debes aceptar los términos de autocompletado sin toque');
                         alert("Debes aceptar los términos de autocompletado sin toque");
@@ -3343,7 +3478,7 @@
                         switch(buttonType) {
                             case 'quick_reply':
                                 const quickReplyText = $(this).find('input[name="desactivar_text"]').val();
-                                console.log('Quick Reply Text:', quickReplyText); // Depuración
+                                // console.log('Quick Reply Text:', quickReplyText); // Depuración
                                 buttonData = {
                                     type: "QUICK_REPLY",
                                     text: quickReplyText
@@ -3352,7 +3487,7 @@
 
                             case 'quick_reply_custom':
                                 const quickReplyCustonText = $(this).find('input[name="personalizado_text"]').val();
-                                console.log('Quick Reply Text:', quickReplyCustonText); // Depuración
+                                // console.log('Quick Reply Text:', quickReplyCustonText); // Depuración
                                 buttonData = {
                                     type: "QUICK_REPLY",
                                     text: quickReplyCustonText
@@ -3606,6 +3741,8 @@
         document.addEventListener('DOMContentLoaded', function() {
             const templateSelect = document.getElementById('templateSelect');
             const renderViewTemplate = document.getElementById('render_view_template');
+            const templateSelectCampaigns = document.getElementById('templateSelectCampaigns');
+            const renderViewTemplateCampaigns = document.getElementById('render_view_template_campaigns');
 
 
             templateSelect.addEventListener('change', function() {
@@ -3666,7 +3803,7 @@
                                 } else if (component.type === 'BODY' && component.text) {
                                     // console.log(component);
                                     const matches = component.text.match(/{{\d+}}/g);
-                                    console.log("Matches: " + matches);
+                                    // console.log("Matches: " + matches);
                                     if (matches) {
                                         form.innerHTML += `<h5>BODY Parameters</h5>`;
                                         matches.forEach((match, index) => {
@@ -3706,7 +3843,7 @@
                                 }
                             });
 
-                            console.log(form);
+                            // console.log(form);
 
                             // Añadir campo oculto para el ID de la plantilla
                             // form.innerHTML += `<input type="hidden" id="templateId" name="template_id" value="${data.id}">`;
@@ -3722,6 +3859,124 @@
                     });
                 }
             });
+
+
+            templateSelectCampaigns.addEventListener('change', function() {
+                const templateId = this.value;
+
+                if (templateId) {
+                    fetch(`/template-selected/${templateId}`, {
+                        method: 'GET',
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                            'Content-Type': 'application/json'
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        // Renderizar la plantilla en el div
+                        renderViewTemplateCampaigns.innerHTML = data.html;
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Error al cargar la plantilla.');
+                    });
+
+
+                    $.ajax({
+                        url: '/template-json', // Ruta de Laravel para obtener los detalles de la plantilla
+                        type: 'POST',
+                        data: {
+                            _token: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                            id: templateId
+                        },
+                        success: function (data) {
+                            // Mapea los datos del JSON a los campos del formulario
+                            // console.log(data);
+
+                            const form = document.getElementById('campaigns_fields');
+                            form.innerHTML = ''; // Limpiar el formulario
+
+                            form.innerHTML += `<div><h5>Parametros de plantilla</h5></div>`;
+
+                            // console.log(data.components);
+                            // Añadir campos dinámicos basados en los parámetros de la plantilla
+                            data.components.forEach(component => {
+                                if (component.type === 'HEADER' && component.text) {
+                                    const matches = component.text.match(/{{\d+}}/g);
+                                    if (matches) {
+                                        form.innerHTML += `<h5>HEADER Parameters</h5>`;
+                                        matches.forEach((match, index) => {
+                                            const exampleText = component.example ? component.example.header_text[index] : '';
+                                            form.innerHTML += `
+                                                <div class="form-group">
+                                                    <label for="param_HEADER_${index}">HEADER Param ${index + 1}</label>
+                                                    <input type="text" class="form-control" id="param_HEADER_${index}" name="param_HEADER_${index}" value="${exampleText}" required>
+                                                </div>
+                                            `;
+                                        });
+                                    }
+                                } else if (component.type === 'BODY' && component.text) {
+                                    // console.log(component);
+                                    const matches = component.text.match(/{{\d+}}/g);
+                                    // console.log("Matches: " + matches);
+                                    if (matches) {
+                                        form.innerHTML += `<h5>BODY Parameters</h5>`;
+                                        matches.forEach((match, index) => {
+                                            const exampleText = component.example ? component.example.body_text[0][index] : '';
+                                            form.innerHTML += `
+                                                <div class="form-group">
+                                                    <label for="param_BODY_${index}">BODY Param ${index + 1}</label>
+                                                    <input type="text" class="form-control" id="param_BODY_${index}" name="param_BODY_${index}" value="${exampleText}" required>
+                                                </div>
+                                            `;
+                                        });
+                                    }
+                                } else if (component.type === 'BUTTONS') {
+                                    component.buttons.forEach((button, buttonIndex) => {
+                                        if (button.url) {
+                                            const matches = button.url.match(/{{\d+}}/g);
+                                            if (matches) {
+                                                form.innerHTML += `<h5>Button ${buttonIndex + 1} Parameters</h5>`;
+                                                matches.forEach((match, index) => {
+                                                    const exampleText = button.example ? button.example[index] : '';
+                                                    form.innerHTML += `
+                                                        <div class="form-group">
+                                                            <label for="param_BUTTON_${buttonIndex}_${index}">Button ${buttonIndex + 1} Param ${index + 1}</label>
+                                                            <input type="text" class="form-control" id="param_BUTTON_${buttonIndex}_${index}" name="param_BUTTON_${buttonIndex}_${index}" value="${exampleText}" required>
+                                                        </div>
+                                                    `;
+                                                });
+                                            }
+                                        }
+                                    });
+                                } else {
+                                    form.innerHTML += `
+                                                        <div class="form-group">
+                                                            <p>Sin Paramatros</p>
+                                                        </div>
+                                                    `;
+                                }
+                            });
+
+                            // console.log(form);
+
+                            // Añadir campo oculto para el ID de la plantilla
+                            // form.innerHTML += `<input type="hidden" id="templateId" name="template_id" value="${data.id}">`;
+
+                            // Añadir botón de envío
+                            // form.innerHTML += `<button type="submit" class="btn btn-primary">Enviar</button>`;
+
+                        },
+                        error: function (xhr, status, error) {
+                            console.error('Error en la solicitud:', error);
+                            alert("Hubo un error al cargar los datos de la plantilla. Por favor, intenta de nuevo.");
+                        }
+                    });
+                }
+            });
+
+
         });
 
         document.addEventListener('DOMContentLoaded', function() {
@@ -3753,6 +4008,102 @@
             sendMassiveMessageBtn.addEventListener('click', function() {
                 const selectedContacts = Array.from(document.querySelectorAll('.contact-checkbox:checked')).map(checkbox => checkbox.value);
                 const selectedTemplate = templateSelect.value;
+
+                if (selectedContacts.length === 0) {
+                    alert('Por favor, seleccione al menos un contacto.');
+                    return;
+                }
+
+                if (!selectedTemplate) {
+                    alert('Por favor, seleccione una plantilla.');
+                    return;
+                }
+
+                const formData = new FormData();
+                formData.append('template_id', selectedTemplate);
+                selectedContacts.forEach(contact => formData.append('contacts[]', contact));
+
+                // Recopilar los datos de los campos dinámicos
+                const dynamicFields = renderViewTemplate.querySelectorAll('input, select, textarea');
+                dynamicFields.forEach(field => {
+                    formData.append(field.name, field.value);
+                });
+
+                // Cambiar el estado del botón a "cargando"
+                sendMassiveMessageBtn.innerHTML = `
+                    <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                    Loading...
+                `;
+                sendMassiveMessageBtn.disabled = true;
+
+                // Ocultar los resultados antes de enviar
+                massiveMessagesSended.textContent = '0';
+                massiveMessagesSuccess.textContent = '0';
+                massiveMessagesError.textContent = '0';
+
+                fetch('/send-massive-message', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    },
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.successful !== undefined && data.failed !== undefined) {
+                        massiveMessagesSended.textContent = selectedContacts.length;
+                        massiveMessagesSuccess.textContent = data.successful;
+                        massiveMessagesError.textContent = data.failed;
+                        // alert('Mensajes enviados exitosamente.');
+                        showAlert('success', 'Mensajes enviados exitosamente.');
+                    } else {
+                        alert('Error al enviar los mensajes.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error al enviar los mensajes.');
+                })
+                .finally(() => {
+                    // Volver al estado normal del botón
+                    sendMassiveMessageBtn.innerHTML = 'Enviar';
+                    sendMassiveMessageBtn.disabled = false;
+                });
+            });
+
+            // Inicializar el conteo de contactos seleccionados
+            updateContactCount();
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const selectAllBtnCampaigns = document.getElementById('selectAllBtnCampaigns');
+            const checkboxesCampaigns = document.querySelectorAll('.contact-checkbox-campaigns');
+            const countContactsCampaigns = document.getElementById('count_contacts_campaigns');
+            const sendMassiveMessageBtnCampaigns = document.getElementById('sendMassiveMessageBtnCampaigns');
+            const templateSelectCampaigns = document.getElementById('templateSelectCampaigns');
+            const renderViewTemplateCampaigns = document.getElementById('campaigns_fields');
+            const campaignSended = document.getElementById('campaign_sended');
+            const campaignSuccess = document.getElementById('campaign_success');
+            const campaignError = document.getElementById('campaign_error');
+
+            function updateContactCount() {
+                const selectedCount = document.querySelectorAll('.contact-checkbox-campaigns:checked').length;
+                countContactsCampaigns.textContent = selectedCount;
+            }
+
+            checkboxesCampaigns.forEach(checkbox => {
+                checkbox.addEventListener('change', updateContactCount);
+            });
+
+            selectAllBtnCampaigns.addEventListener('click', function() {
+                const allChecked = Array.from(checkboxesCampaigns).every(checkbox => checkbox.checked);
+                checkboxesCampaigns.forEach(checkbox => checkbox.checked = !allChecked);
+                updateContactCount(); // Actualiza el conteo después de seleccionar/deseleccionar todos
+            });
+
+            sendCampaignBtn.addEventListener('click', function() {
+                const selectedContacts = Array.from(document.querySelectorAll('.contact-checkbox-campaigns:checked')).map(checkbox => checkbox.value);
+                const selectedTemplate = templateSelectCampaigns.value;
 
                 if (selectedContacts.length === 0) {
                     alert('Por favor, seleccione al menos un contacto.');
