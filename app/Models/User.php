@@ -64,4 +64,10 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    // Relación con Sesiones asignadas
+    public function assignedChatSessions()
+    {
+        return $this->hasMany(ChatSession::class, 'assigned_agent_id');
+    }
 }

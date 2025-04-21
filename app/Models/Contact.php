@@ -33,7 +33,7 @@ class Contact extends Model
 
         static::creating(function ($model) {
             if (empty($model->{$model->getKeyName()})) {
-                $model->{$model->getKeyName()} = Str::uuid()->toString();
+                $model->{$model->getKeyName()} = Str::ulid()->toString();
                 // $model->{$model->getKeyName()} = 'prof_' . Str::uuid()->toString();
             }
         });
@@ -68,5 +68,21 @@ class Contact extends Model
             'contact_id',
             'campaign_id'
         );
+    }
+
+    // Relación con Sesiones de chat
+    public function chatSessions()
+    {
+        return $this->hasMany(ChatSession::class, 'contact_id');
+    }
+
+    // Relación con Respuestas de usuario
+    public function userResponses()
+    {
+        return $this->hasMany(UserResponse::class, 'contact_id');
+    }
+
+    public function getFullNameAttribute(): string {
+        return trim("{$this->prefix} {$this->first_name} {$this->middle_name} {$this->last_name} {$this->suffix}");
     }
 }

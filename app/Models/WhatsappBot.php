@@ -27,7 +27,7 @@ class WhatsappBot extends Model
 
         static::creating(function ($model) {
             if (empty($model->{$model->getKeyName()})) {
-                $model->{$model->getKeyName()} = (string) Str::uuid();
+                $model->{$model->getKeyName()} = (string) Str::ulid();
             }
         });
     }
@@ -53,5 +53,11 @@ class WhatsappBot extends Model
                 'port' => $bot->port,
             ];
         })->toArray();
+    }
+
+    // Relación con Flujos
+    public function flows()
+    {
+        return $this->hasMany(Flow::class, 'bot_id');
     }
 }
