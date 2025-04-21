@@ -31,7 +31,7 @@ class WhatsappBusinessProfile extends Model
 
         static::creating(function ($model) {
             if (empty($model->{$model->getKeyName()})) {
-                $model->{$model->getKeyName()} = Str::uuid()->toString();
+                $model->{$model->getKeyName()} = Str::ulid()->toString();
                 // $model->{$model->getKeyName()} = 'prof_' . Str::uuid()->toString();
             }
         });

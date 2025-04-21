@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('file_name', 45);
             $table->string('mime_type', 45);
             $table->string('sha256', 45);
-            $table->string('url', 1000);
+            $table->text('url');
             $table->string('media_id', 45);
             $table->string('file_size', 45)->nullable();
             $table->string('animated', 45)->nullable();

@@ -30,7 +30,7 @@ class WhatsappPhoneNumber extends Model
 
         static::creating(function ($model) {
             if (empty($model->{$model->getKeyName()})) {
-                $model->{$model->getKeyName()} = Str::uuid()->toString();
+                $model->{$model->getKeyName()} = Str::ulid()->toString();
                 // $model->{$model->getKeyName()} = 'phone_' . Str::uuid()->toString();
             }
         });
@@ -60,5 +60,11 @@ class WhatsappPhoneNumber extends Model
     {
         return $this->hasManyThrough(Contact::class, Message::class, 'whatsapp_phone_id', 'contact_id', 'whatsapp_phone_id', 'contact_id')
                     ->distinct();
+    }
+
+    // Relación con Sesiones de chat
+    public function chatSessions()
+    {
+        return $this->hasMany(ChatSession::class, 'whatsapp_phone_id');
     }
 }

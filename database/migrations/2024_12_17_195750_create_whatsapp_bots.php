@@ -16,6 +16,9 @@ return new class extends Migration
             $table->string('bot_name', 45);
             $table->integer('port');
             $table->string('url', 45);
+            $table->boolean('is_enabled')->default(true); // Habilitar/deshabilitar bot
+            $table->foreignUuid('default_flow_id')->nullable(); // Flujo por defecto
+            $table->enum('on_failure', ['assign_agent', 'notify'])->default('assign_agent'); // Acción si falla el flujo
             $table->timestamps();
             $table->softDeletes();
         });
